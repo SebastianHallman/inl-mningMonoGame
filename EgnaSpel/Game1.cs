@@ -1,7 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+
 
 namespace EgnaSpel
 {
@@ -16,7 +20,12 @@ namespace EgnaSpel
         Texture2D platform;
         int windowWidth;
         int windowHeight;
+        int gravity = 5;
+        int player_speed = 7;
+        bool hit;
+        bool grounded = false;
         List<Vector2> platforms_pos = new List<Vector2>();
+        List<Rectangle> platform_hitbox = new List<Rectangle>();
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -38,7 +47,7 @@ namespace EgnaSpel
             // TODO: Add your initialization logic here
             
             player_pos.X = 200;
-            player_pos.Y = 200;
+            player_pos.Y = 100;
            
             windowWidth = Window.ClientBounds.X;
             windowHeight = Window.ClientBounds.Y;
@@ -47,15 +56,25 @@ namespace EgnaSpel
                 if (i==0)
                 {
 
-                    Vector2 pos = new Vector2(0, 420);
+                    Vector2 pos = new Vector2(0, 452);
                     platforms_pos.Add(pos);
                 }
                 else
                 {
-                    Vector2 pos = new Vector2(i * 128, 420);
+                    Vector2 pos = new Vector2(i * 128, 452);
                     platforms_pos.Add(pos);
                 }
                 
+            }
+
+            foreach (Vector2 plat in platforms_pos)
+            {
+                Rectangle hitbox = new Rectangle();
+                hitbox.X = Convert.ToInt32(plat.X);
+                hitbox.Y = Convert.ToInt32(plat.Y);
+                hitbox.Width = 128;
+                hitbox.Height = 32;
+                platform_hitbox.Add(hitbox);
             }
             base.Initialize();
         }
@@ -92,9 +111,46 @@ namespace EgnaSpel
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            // gravitation
+            if (grounded == false)
+            {
+                player_pos.Y += gravity;
+            }
+            // Kollar om spelaren är på en plattform
+            foreach (Rectangle pf in platform_hitbox)
+            {
+                Rectangle player_hitbox = new Rectangle(pf.X, pf.Y, player.Width, player.Height);
+                hit = CheckCollision(player_hitbox, pf);
+
+                if (player_pos.Y == pf.Y - 32 && player_pos.X >= pf.X - 32 && player_pos.X <= pf.X + 128)
+                {
+                    grounded = true;
+                    break;
+                }
+                else
+                {
+                    grounded = false;
+                }
+            }
+            // Förflyttning
+            KeyboardState Key = Keyboard.GetState();
+
+            if (Key.IsKeyDown(Keys.Left))
+            {
+                player_pos.X -= player_speed;
+            }
+            if (Key.IsKeyDown(Keys.Right))
+            {
+                player_pos.X += player_speed;
+            }
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+        }
+
+        public bool CheckCollision(Rectangle player, Rectangle Object)
+        {
+            return player.Intersects(Object);
         }
 
         /// <summary>

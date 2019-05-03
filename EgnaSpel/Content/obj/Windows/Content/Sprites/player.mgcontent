@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>Z:/Documents/GitHub/inlämningMono/inl-mningMonoGame/EgnaSpel/Content/Sprites/player.png</SourceFile>
-  <SourceTime>2019-04-30T11:20:35.1064132+02:00</SourceTime>
+  <SourceTime>2019-05-03T12:10:49.667085+02:00</SourceTime>
   <DestFile>Z:/Documents/GitHub/inlämningMono/inl-mningMonoGame/EgnaSpel/Content/bin/Windows/Content/Sprites/player.xnb</DestFile>
-  <DestTime>2019-04-30T11:20:45.4242916+02:00</DestTime>
+  <DestTime>2019-05-03T12:12:20.0921004+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-12-08T17:35:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
