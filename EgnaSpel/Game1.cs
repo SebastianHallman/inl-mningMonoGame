@@ -24,6 +24,9 @@ namespace EgnaSpel
         int player_speed = 7;
         bool hit;
         bool grounded = false;
+        bool jumped = true;
+        int jump_force = 10;
+        int jump_counter = 0;
         List<Vector2> platforms_pos = new List<Vector2>();
         List<Rectangle> platform_hitbox = new List<Rectangle>();
 
@@ -65,8 +68,10 @@ namespace EgnaSpel
                     platforms_pos.Add(pos);
                 }
                 
+                
             }
-
+            Vector2 testplatform = new Vector2(400, 302);
+            platforms_pos.Add(testplatform);
             foreach (Vector2 plat in platforms_pos)
             {
                 Rectangle hitbox = new Rectangle();
@@ -112,24 +117,27 @@ namespace EgnaSpel
                 Exit();
 
             // gravitation
-            if (grounded == false)
+            if (grounded == false || jumped == true)
             {
                 player_pos.Y += gravity;
+                
             }
             // Kollar om spelaren är på en plattform
             foreach (Rectangle pf in platform_hitbox)
             {
-                Rectangle player_hitbox = new Rectangle(pf.X, pf.Y, player.Width, player.Height);
-                hit = CheckCollision(player_hitbox, pf);
+                
 
                 if (player_pos.Y == pf.Y - 32 && player_pos.X >= pf.X - 32 && player_pos.X <= pf.X + 128)
                 {
                     grounded = true;
+                    jumped = false;
+                    jump_counter = 45;
                     break;
                 }
                 else
                 {
                     grounded = false;
+                    jumped = true;
                 }
             }
             // Förflyttning
@@ -142,6 +150,14 @@ namespace EgnaSpel
             if (Key.IsKeyDown(Keys.Right))
             {
                 player_pos.X += player_speed;
+            }
+            if (Key.IsKeyDown(Keys.Space))
+            {
+                if (jump_counter > 0)
+                {
+                    player_pos.Y -= jump_force;
+                    jump_counter--;
+                }
             }
             // TODO: Add your update logic here
 
