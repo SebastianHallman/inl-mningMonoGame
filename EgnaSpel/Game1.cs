@@ -120,7 +120,7 @@ namespace EgnaSpel
             if (grounded == false || jumped == true)
             {
                 player_pos.Y += gravity;
-                
+                jump_counter--;
             }
             // Kollar om spelaren är på en plattform
             foreach (Rectangle pf in platform_hitbox)
@@ -156,7 +156,7 @@ namespace EgnaSpel
                 if (jump_counter > 0)
                 {
                     player_pos.Y -= jump_force;
-                    jump_counter--;
+                    
                 }
             }
             // TODO: Add your update logic here
