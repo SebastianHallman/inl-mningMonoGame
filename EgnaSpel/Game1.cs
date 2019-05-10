@@ -54,7 +54,7 @@ namespace EgnaSpel
            
             windowWidth = Window.ClientBounds.X;
             windowHeight = Window.ClientBounds.Y;
-            for (int i = 1; i<5; i++)
+            for (int i = 1; i<3; i++)
             {
                 if (i==0)
                 {
@@ -70,8 +70,10 @@ namespace EgnaSpel
                 
                 
             }
-            Vector2 testplatform = new Vector2(400, 302);
+            Vector2 testplatform = new Vector2(400, 352);
             platforms_pos.Add(testplatform);
+            Vector2 testplatform2 = new Vector2(300, 252);
+            platforms_pos.Add(testplatform2);
             foreach (Vector2 plat in platforms_pos)
             {
                 Rectangle hitbox = new Rectangle();
@@ -125,13 +127,21 @@ namespace EgnaSpel
             // Kollar om spelaren är på en plattform
             foreach (Rectangle pf in platform_hitbox)
             {
-                
+                if (player_pos.Y < pf.Y-33 && player_pos.Y > pf.Y-20 && player_pos.X >= pf.X - 32 && player_pos.X <= pf.X + 128)
+                {
+                    player_pos.Y = pf.Y - 32;
+                }
+
+                if (player_pos.Y <= pf.Y+35 && player_pos.Y >= pf.Y + 27 && player_pos.X >= pf.X - 32 && player_pos.X <= pf.X + 128)
+                {
+                    grounded = true;
+                }
 
                 if (player_pos.Y == pf.Y - 32 && player_pos.X >= pf.X - 32 && player_pos.X <= pf.X + 128)
                 {
                     grounded = true;
                     jumped = false;
-                    jump_counter = 45;
+                    jump_counter = 20;
                     break;
                 }
                 else
